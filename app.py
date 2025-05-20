@@ -10,43 +10,45 @@ import os
 
 st.set_page_config(page_title="五線譜分析工具", page_icon="📈", layout="wide")
 
-# ==== 自定義 CSS（深色主題 + 動畫） ====
+# ==== 自定義 CSS（深色主題 + 動畫 + 覆蓋） ====
 st.markdown("""
 <style>
-    .block-container {
-        padding-top: 2rem;
-        padding-bottom: 2rem;
-        background-color: #111111;
-        color: white;
-    }
-    .stTextInput > div > div > input,
-    .stSelectbox > div > div > div {
-        background-color: #1c1c1c;
-        color: white;
-        border-radius: 5px;
-    }
-    .stButton > button {
-        background-color: #4CAF50;
-        color: white;
-        padding: 0.5rem 1.5rem;
-        border: none;
-        border-radius: 5px;
-        font-size: 16px;
-        transition: 0.3s;
-    }
-    .stButton > button:hover {
-        background-color: #45a049;
-        transform: scale(1.05);
-    }
-    .logo {
-        text-align: center;
-        margin-bottom: 2rem;
-        animation: fadeIn 1.5s ease-in;
-    }
-    @keyframes fadeIn {
-        from {opacity: 0; transform: translateY(-10px);}
-        to {opacity: 1; transform: translateY(0);}
-    }
+html, body, .stApp {
+    background-color: #111111 !important;
+    color: white !important;
+}
+.block-container {
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+}
+.stTextInput > div > div > input,
+.stSelectbox > div > div > div {
+    background-color: #1c1c1c;
+    color: white;
+    border-radius: 5px;
+}
+.stButton > button {
+    background-color: #4CAF50;
+    color: white;
+    padding: 0.5rem 1.5rem;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    transition: 0.3s;
+}
+.stButton > button:hover {
+    background-color: #45a049;
+    transform: scale(1.05);
+}
+.logo {
+    text-align: center;
+    margin-bottom: 2rem;
+    animation: fadeIn 1.5s ease-in;
+}
+@keyframes fadeIn {
+    from {opacity: 0; transform: translateY(-10px);}
+    to {opacity: 1; transform: translateY(0);}
+}
 </style>
 """, unsafe_allow_html=True)
 
@@ -177,4 +179,3 @@ if st.button("🚀 開始分析") and tickers:
             file_name="五線譜分析結果.csv",
             mime="text/csv"
         )
-
