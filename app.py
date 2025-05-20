@@ -1,4 +1,3 @@
-
 import streamlit as st
 import yfinance as yf
 import pandas as pd
@@ -10,12 +9,35 @@ import io
 st.set_page_config(page_title="五線譜分析工具", layout="wide")
 st.title("📈 樂活五線譜自動分析工具")
 
-# 使用者輸入股票代碼
-stock_input = st.text_input("請輸入股票代碼（可多支，用逗號分隔，如：AAPL, TSLA, CNC）：")
+# === 匯入檔案 ===
+uploaded_file = st.file_uploader("📤 請上傳股票代碼清單（CSV 或 Excel）", type=["csv", "xlsx"])
+
+# === 手動輸入股票代碼 ===
+manual_input = st.text_input("✍️ 手動輸入股票代碼（可多支，用逗號分隔，如 AAPL, TSLA）")
+
+# === 選擇資料區間 ===
 date_range = st.selectbox("選擇資料區間：", ["1y", "2y", "3y", "5y", "10y"], index=3)
 
-if st.button("開始分析") and stock_input:
-    tickers = [s.strip().upper() for s in stock_input.split(",") if s.strip()]
+# === 整理股票代碼 ===
+tickers = []
+
+# 檔案匯入
+if uploaded_file is not None:
+    if uploaded_file.name.endswith(".csv"):
+        df_codes = pd.read_csv(uploaded_file, header=None)
+    else:
+        df_codes = pd.read_excel(uploaded_file, header=None)
+    tickers += df_codes.iloc[:, 0].dropna().astype(str).str.upper().tolist()
+
+# 手動輸入
+if manual_input:
+    manual_list = [x.strip().upper() for x in manual_input.split(",") if x.strip()]
+    tickers += manual_list
+
+# 去除重複
+tickers = list(set(tickers))
+
+if st.button("開始分析") and tickers:
     results = []
 
     for ticker in tickers:
