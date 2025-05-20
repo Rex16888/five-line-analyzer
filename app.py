@@ -21,13 +21,24 @@ date_range = st.selectbox("選擇資料區間：", ["1y", "2y", "3y", "5y", "10y
 # === 整理股票代碼 ===
 tickers = []
 
-# 檔案匯入
+# 檔案匯入（含欄位名稱辨識）
 if uploaded_file is not None:
-    if uploaded_file.name.endswith(".csv"):
-        df_codes = pd.read_csv(uploaded_file, header=None)
-    else:
-        df_codes = pd.read_excel(uploaded_file, header=None)
-    tickers += df_codes.iloc[:, 0].dropna().astype(str).str.upper().tolist()
+    try:
+        if uploaded_file.name.endswith(".csv"):
+            df_codes = pd.read_csv(uploaded_file)
+        else:
+            df_codes = pd.read_excel(uploaded_file)
+
+        found = False
+        for col in df_codes.columns:
+            if "代碼" in str(col):
+                tickers += df_codes[col].dropna().astype(str).str.upper().tolist()
+                found = True
+                break
+        if not found:
+            tickers += df_codes.iloc[:, 0].dropna().astype(str).str.upper().tolist()
+    except Exception as e:
+        st.error(f"❌ 檔案讀取失敗：{e}")
 
 # 手動輸入
 if manual_input:
