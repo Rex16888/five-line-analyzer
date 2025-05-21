@@ -55,7 +55,7 @@ html, body, .stApp {
 # ==== Logo 與標題 ====
 st.markdown("""
 <div class="logo">
-    <h1>🎼 樂活五線譜分析工具</h1>
+    <h1>🎼 雷克斯美股分析工具</h1>
     <p>用最懶惰的方式，幫恁爸自動分析股票趨勢</p>
 </div>
 """, unsafe_allow_html=True)
